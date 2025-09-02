@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Akses VVIP</title>
+  <style>
+    html, body {
+      margin: 0; padding: 0;
+      width: 100%; height: 100%;
+      background: #000;
+      font-family: Arial, sans-serif;
+      overflow-x: hidden;
+      overflow-y: hidden;
+    }
+
+    .countdown {
+      text-align: center;
+      font-size: 1.5em;
+      position: fixed;
+      top: 40%;
+      width: 100%;
+      color: #fff;
+      z-index: 10;
+    }
+    .hidden { display: none; }
+
+    /* Gift animasi */
+    .gift {
+      position: fixed;
+      font-size: 24px;
+      animation: float 3s linear infinite;
+      pointer-events: none;
+      z-index: 5;
+    }
+    @keyframes float {
+      0% { transform: translateY(100vh) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+    }
+
+    /* ✅ Desktop (banner tengah normal) */
+    .image-container img {
+      display: block;
+      margin: auto;
+      width: 400px;
+      max-width: 90%;
+      cursor: pointer;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(255,255,255,0.6);
+      animation: fadeIn 1s ease-in;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.9); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    /* ✅ Mobile fullscreen presisi */
+    @media (max-width: 768px) {
+      .image-container, .image-container img {
+        position: fixed;
+        top: 0; left: 0;
+        width: 100%;
+        height: 100%;
+        border-radius: 0;
+        box-shadow: none;
+      }
+      .image-container img {
+        object-fit: cover;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Countdown -->
+  <div class="countdown" id="countdown">
+    <p>🎉 MOHON DI TUNGGU AKSES VVIP 🎉</p>
+    <h1 id="timer">3</h1>
+  </div>
+
+  <!-- Gambar promo -->
+  <div class="image-container hidden" id="imageContainer">
+    <a href="https://shortq.link/aksesvvip" target="_blank">
+      <img src="gambards.png" alt="Promo September">
+    </a>
+  </div>
+
+  <script>
+    let timeLeft = 3;
+    const timer = document.getElementById("timer");
+    const countdown = document.getElementById("countdown");
+    const imageContainer = document.getElementById("imageContainer");
+
+    let interval = setInterval(() => {
+      timeLeft--;
+      timer.textContent = timeLeft;
+      if (timeLeft <= 0) {
+        clearInterval(interval);
+        countdown.classList.add("hidden");
+        imageContainer.classList.remove("hidden");
+        spawnGifts();
+
+        // ✅ Auto redirect hanya di mobile
+        if (window.innerWidth <= 768) {
+          setTimeout(() => {
+            window.location.href = "https://shortq.link/aksesvvip";
+          }, 5000); // 5 detik setelah gambar muncul
+        }
+      }
+    }, 1000);
+
+    // Animasi gift jatuh
+    function spawnGifts() {
+      const giftIcons = ["🎁","🎉","✨","💎","💰","🔥"];
+      setInterval(() => {
+        const gift = document.createElement("div");
+        gift.className = "gift";
+        gift.textContent = giftIcons[Math.floor(Math.random()*giftIcons.length)];
+        gift.style.left = Math.random() * window.innerWidth + "px";
+        gift.style.top = "100vh";
+        document.body.appendChild(gift);
+        setTimeout(() => gift.remove(), 3000);
+      }, 500);
+    }
+  </script>
+</body>
+</html>
